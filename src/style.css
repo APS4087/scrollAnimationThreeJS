@@ -20,11 +20,15 @@ html {
     height: 100vh;
     position: relative;
     font-family: "Cabin", sans-serif;
-    color: #ffeded;
+    color: #910d0d;
     text-transform: uppercase;
-    font-size: 7vmin;
+    font-size: 6vmin;
     padding-left: 10%;
     padding-right: 10%;
+}
+
+h1 span {
+    display: inline-block;
 }
 
 section:nth-child(even) {

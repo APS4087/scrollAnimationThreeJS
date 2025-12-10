@@ -1,4 +1,6 @@
-# Three.js Journey
+# Scroll-Based Animation with Three.js (Three.js Journey)
+
+![Demo](./demo.gif)
 
 ## Setup
 Download [Node.js](https://nodejs.org/en/download/).
