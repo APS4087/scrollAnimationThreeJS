@@ -27,6 +27,6 @@ html {
     padding-right: 10%;
 }
 
-section:nth-child(odd) {
+section:nth-child(even) {
     justify-content: flex-end;
 }

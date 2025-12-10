@@ -47,6 +47,10 @@ obj1.position.y = -objDistance * 0;
 obj2.position.y = -objDistance * 1;
 obj3.position.y = -objDistance * 2;
 
+obj1.position.x = -2;
+obj2.position.x = 2;
+obj3.position.x = -2;
+
 // lights
 const directionLight = new THREE.DirectionalLight("ffffff", 3);
 directionLight.position.set(1, 1, 0);
@@ -78,6 +82,8 @@ window.addEventListener("resize", () => {
  * Camera
  */
 // Base camera
+const cameraGp = new THREE.Group();
+scene.add(cameraGp);
 const camera = new THREE.PerspectiveCamera(
   35,
   sizes.width / sizes.height,
@@ -85,7 +91,7 @@ const camera = new THREE.PerspectiveCamera(
   100,
 );
 camera.position.z = 6;
-scene.add(camera);
+cameraGp.add(camera);
 
 /**
  * Renderer
@@ -97,13 +103,51 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
+// Check user scroll
+let scrollY = window.scrollY;
+window.addEventListener("scroll", () => {
+  scrollY = window.scrollY;
+});
+
+// Check user mouse Move
+let cursor = {
+  x: 0,
+  y: 0,
+};
+window.addEventListener("mousemove", (event) => {
+  cursor.x = event.clientX / sizes.width - 0.5;
+  cursor.y = event.clientY / sizes.height - 0.5;
+});
+
 /**
  * Animate
  */
 const clock = new THREE.Clock();
+let previousTime = 0;
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  const deltaTime = elapsedTime - previousTime;
+  previousTime = elapsedTime;
+
+  // Animate Objects
+  obj1.rotation.x = elapsedTime * 0.1;
+  obj1.rotation.y = elapsedTime * 0.12;
+
+  obj2.rotation.x = -elapsedTime * 0.1;
+  obj2.rotation.y = -elapsedTime * 0.12;
+
+  obj3.rotation.x = elapsedTime * 0.1;
+  obj3.rotation.y = elapsedTime * 0.12;
+
+  let parallaxX = cursor.x * 0.5;
+  let parallaxY = -cursor.y * 0.5;
+  // easing + parallax
+  cameraGp.position.x += (parallaxX - cameraGp.position.x) * deltaTime * 5;
+  cameraGp.position.y += (parallaxY - cameraGp.position.y) * deltaTime * 5;
+
+  // Move Camera as scroll
+  camera.position.y = -(scrollY / sizes.height) * objDistance;
 
   // Render
   renderer.render(scene, camera);
